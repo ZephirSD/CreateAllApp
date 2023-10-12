@@ -8,5 +8,10 @@ namespace CreateAllApp.Views
         {
             InitializeComponent();
         }
+        private void Page_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            var heightPage = e.NewSize.Height;
+            this.logConsole.Height = heightPage - 200;
+        }
     }
 }
