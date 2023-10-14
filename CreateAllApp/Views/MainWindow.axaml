@@ -9,6 +9,14 @@
         Icon="/Assets/avalonia-logo.ico"
         Title="CreateAllApp" SizeChanged="Page_SizeChanged" >
 
+	<!--<Styles xmlns="https://github.com/avaloniaui">
+		<Style Selector="ListBoxItem">
+			<Setter Property="Background" Value="{Binding IsSelected, Converter={StaticResource selectedToColorConverter}, Mode=TwoWay}" />
+			<Setter Property="Foreground" Value="Black" />
+			<Setter Property="Padding" Value="10" />
+			<Setter Property="HorizontalAlignment" Value="Left" />
+		</Style>
+	</Styles>-->
 	<Grid>
 		<Grid.Background>
 			<LinearGradientBrush>
@@ -26,16 +34,17 @@
 		
 			<Border Background="#f0d0b7" Margin="20 35" CornerRadius="15">
 				<StackPanel Width="200">
-					<Menu VerticalAlignment="Top" Margin="5 10">
-						<Menu.ItemsPanel>
-							<ItemsPanelTemplate>
-								<StackPanel Orientation="Vertical"></StackPanel>
-							</ItemsPanelTemplate>
-						</Menu.ItemsPanel>
-						<Border Background="#caa189" CornerRadius="8" Margin="0 2.5">
-							<MenuItem Header="ReactJS" Foreground="White" FontFamily="Verdana" FontSize="16"></MenuItem>							
-						</Border>
-					</Menu>
+					<ListBox Name="menu" Background="Transparent" ItemsSource="{Binding Frameworks}">
+							<ListBox.ItemTemplate>
+								<DataTemplate>
+									<DockPanel Background="#caa189">
+										<Image Source="/Assets/avalonia-logo.ico" Width="30"/>
+										<Separator Width="5" Background="Transparent"/>
+										<TextBlock Text="{Binding Nom}" Foreground="White" FontFamily="Verdana" FontSize="15" VerticalAlignment="Center"/>
+									</DockPanel>
+								</DataTemplate>
+							</ListBox.ItemTemplate>
+					</ListBox>
 				</StackPanel>
 			</Border>
 			<Border Background="#f0d0b7" Margin="20 35" Padding="35 10" CornerRadius="25">
@@ -55,23 +64,26 @@
 							</Grid.ColumnDefinitions>
 						</Grid>
 						<Border Grid.Column="0" CornerRadius="10" Background="#caa189" Margin="5 10">
-							<Button Foreground="White" Background="Transparent" FontFamily="Verdana" Content="Selectionner le dossier" Padding="20 5" FontSize="11" />
+							<Button Foreground="White" Background="Transparent" FontFamily="Verdana" Name="btnSelectDossier" Click="BtnSelectDossier_Click" Content="Selectionner le dossier" Padding="20 5" FontSize="11" />
 						</Border>
 						<StackPanel Grid.Column="1" Margin="5 10">
-							<TextBox BorderBrush="Transparent" FontFamily="Verdana" IsReadOnly="True" Focusable="False" FontSize="11" Text="Test"></TextBox>
+							<TextBox Name="tbxDossier" BorderBrush="Transparent" FontFamily="Verdana" IsReadOnly="True" Focusable="False" FontSize="11"></TextBox>
 						</StackPanel>
 					</DockPanel>
 					<StackPanel Grid.Row="1">
 						<TextBox Name="logConsole" BorderBrush="Transparent" Background="#747575" Foreground="White" FontSize="11" FontFamily="Verdana" Focusable="False" IsReadOnly="True"></TextBox>
 					</StackPanel>
-					<StackPanel Grid.Row="2" Margin="0 10">
-						<Border Background="#D68875" CornerRadius="8" HorizontalAlignment="Right">
+					<DockPanel Grid.Row="2" Margin="0 10">
+						<DockPanel>
+							<TextBlock Text="Nom du projet" VerticalAlignment="Center" Foreground="White" FontFamily="Verdana" FontSize="13" Margin="10 0"/>
+							<TextBox Width="150" Name="tbxNomProjet" FontSize="12" FontFamily="Verdana"></TextBox>
+						</DockPanel>
+						<Border Background="#D68875" HorizontalAlignment="Right" CornerRadius="8">
 							<Button Content="Lancer" Foreground="White" FontFamily="Verdana" FontSize="13" Padding="25 7"></Button>
 						</Border>
-					</StackPanel>
+					</DockPanel>
 				</StackPanel>
 			</Border>
-			
 		</DockPanel>
 	</Grid>
 
