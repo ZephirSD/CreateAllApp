@@ -9,8 +9,14 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Models\" />
     <AvaloniaResource Include="Assets\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="Assets\Logo_Framework\nextjs_icon.png" />
+    <None Remove="Assets\Logo_Framework\react_icon.png" />
+    <None Remove="Assets\Logo_Framework\symfony_icon.png" />
+    <None Remove="Assets\Logo_Framework\vuejs_icon.png" />
   </ItemGroup>
 
 
@@ -22,5 +28,6 @@
     <!--Condition below is needed to remove Avalonia.Diagnostics package from build output in Release configuration.-->
     <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="11.0.2" />
     <PackageReference Include="Avalonia.ReactiveUI" Version="11.0.2" />
+    <PackageReference Include="System.ServiceProcess.ServiceController" Version="7.0.1" />
   </ItemGroup>
 </Project>
