@@ -48,6 +48,7 @@ namespace CreateAllApp.Views
             if(!string.IsNullOrEmpty(dossierSelect))
             {
                 this.tbxDossier.Text = dossierSelect;
+                this.tbxNomProjet.IsEnabled = true;
                 //process.StandardInput.WriteLine(arguments2);
                 //process.StandardInput.WriteLine("code .");
                 //process.WaitForExit();
@@ -62,7 +63,18 @@ namespace CreateAllApp.Views
             //mitSelection.Background =;
         }
 
-
+        public void tbxNomProjet_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            TextBox txtNomProjet = (TextBox)sender;
+            if(txtNomProjet.Text != string.Empty)
+            {
+                this.btnLance.IsEnabled = true;
+            }
+            else
+            {
+                this.btnLance.IsEnabled = false;
+            }
+        }
 
     }
 }

@@ -1,6 +1,5 @@
 ﻿using CreateAllApp.Models;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 
 namespace CreateAllApp.ViewModels
@@ -8,7 +7,6 @@ namespace CreateAllApp.ViewModels
     public class MainWindowViewModel : ViewModelBase
     {
         public ObservableCollection<FrameworkClass> Frameworks { get; set; } = new ObservableCollection<FrameworkClass>();
-
         public MainWindowViewModel()
         {
             Frameworks.Add(new FrameworkClass("ReactJS", new Uri("../Assets/avalonia-logo.ico", UriKind.RelativeOrAbsolute), "npx create-react-app"));
