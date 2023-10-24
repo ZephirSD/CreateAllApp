@@ -34,7 +34,7 @@
 		
 			<Border Background="#f0d0b7" Margin="20 35" CornerRadius="15">
 				<StackPanel Width="200">
-					<ListBox Name="menu" Background="Transparent" ItemsSource="{Binding Frameworks}">
+					<ListBox Name="menu" Background="Transparent" ItemsSource="{Binding Frameworks}" SelectionChanged="menu_SelectionChanged">
 							<ListBox.ItemTemplate>
 								<DataTemplate>
 									<DockPanel Background="#caa189">
@@ -47,7 +47,7 @@
 					</ListBox>
 				</StackPanel>
 			</Border>
-			<Border Background="#f0d0b7" Margin="20 35" Padding="35 10" CornerRadius="25">
+			<Border Background="#f0d0b7" Margin="20 35" Padding="35 10" CornerRadius="25" Name="caseGestFram">
 				<StackPanel>
 					<Grid>
 						<Grid.RowDefinitions>
@@ -74,13 +74,32 @@
 						<TextBox Name="logConsole" BorderBrush="Transparent" Background="#747575" Foreground="White" FontSize="11" FontFamily="Verdana" Focusable="False" IsReadOnly="True"></TextBox>
 					</StackPanel>
 					<DockPanel Grid.Row="2" Margin="0 10">
-						<DockPanel>
-							<TextBlock Text="Nom du projet" VerticalAlignment="Center" Foreground="#767474" FontFamily="Verdana" FontSize="13" Margin="10 0"/>
-							<TextBox Width="150" AcceptsReturn="True" Name="tbxNomProjet" FontSize="12" FontFamily="Verdana" IsEnabled="False" TextChanged="tbxNomProjet_TextChanged"></TextBox>
-						</DockPanel>
-						<Border Background="#D68875" HorizontalAlignment="Right" CornerRadius="8" IsEnabled="False" Name="btnLance">
-							<Button Content="Lancer" Foreground="White" FontFamily="Verdana" FontSize="13" Padding="25 7"></Button>
-						</Border>
+						<Grid>
+							<Grid.ColumnDefinitions>
+								<ColumnDefinition Width="Auto"></ColumnDefinition>
+								<ColumnDefinition Width="Auto"></ColumnDefinition>
+								<ColumnDefinition Width="*"></ColumnDefinition>
+								<ColumnDefinition Width="Auto"></ColumnDefinition>
+							</Grid.ColumnDefinitions>
+						</Grid>
+						<TextBlock Grid.Column="0" Text="Nom du projet" VerticalAlignment="Center" Foreground="#767474" FontFamily="Verdana" FontSize="13" Margin="10 0"/>
+						<TextBox Grid.Column="1" Width="150" AcceptsReturn="True" Name="tbxNomProjet" FontSize="12" FontFamily="Verdana" IsEnabled="False" TextChanged="tbxNomProjet_TextChanged" VerticalAlignment="Center"></TextBox>
+						<Border Grid.Column="2"/>
+						<StackPanel Grid.Column="3" Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Right">
+							<Border Background="#D68875" CornerRadius="8" IsEnabled="False" Name="btnLance" Margin="5 0">
+								<Button Content="Lancer" Foreground="White" FontFamily="Verdana" FontSize="13" Padding="25 7" Click="btnLance_Click"></Button>
+							</Border>
+							<Border Background="#8bafc8" CornerRadius="8" Margin="5 0" Name="btnVSCode">
+								<Button Foreground="White" FontFamily="Verdana" FontSize="13" Padding="25 7">
+									<Button.Content>
+										<StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+											<TextBlock Text="Ouvrir avec" VerticalAlignment="Center"/>
+											<Image Width="25" Margin="5 0" Source="/Assets/vscode_icon.png" VerticalAlignment="Center"/>
+										</StackPanel>
+									</Button.Content>
+								</Button>
+							</Border>
+						</StackPanel>
 					</DockPanel>
 				</StackPanel>
 			</Border>

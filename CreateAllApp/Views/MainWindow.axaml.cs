@@ -1,36 +1,22 @@
 using Avalonia.Controls;
 using Avalonia.Interactivity;
-using Avalonia.Media;
 using CreateAllApp.Models;
 using CreateAllApp.ViewModels;
 using System;
 using System.Diagnostics;
-using System.Drawing;
+using System.Text.RegularExpressions;
 
 namespace CreateAllApp.Views
 {
     public partial class MainWindow : Window
     {
         Process process = new Process();
+        string commandeLineFrame = string.Empty;
         public MainWindow()
         {
             InitializeComponent();
             DataContext = new MainWindowViewModel();
-            //this.itcMenu.ItemsSource = FrameworkClass.GetAll();
-            string terminal = "cmd.exe";
-            string arguments = "/K";
-
-            //process.StartInfo.RedirectStandardOutput = true;
-            //process.StartInfo.RedirectStandardInput = true;
-            process.StartInfo.UseShellExecute = false;
-            process.StartInfo.CreateNoWindow = true;
-            process.StartInfo.FileName = terminal;
-            process.StartInfo.Arguments = arguments;
-            process.Start();
-            Console.WriteLine("Le terminal est en arrière plan");
-            //process.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
-
-            //this.tbxNomProjet.IsEnabled = false;
+            this.caseGestFram.IsEnabled = false;
         }
 
         private void Page_SizeChanged(object sender, SizeChangedEventArgs e)
@@ -43,16 +29,10 @@ namespace CreateAllApp.Views
         {
             var dialog = new OpenFolderDialog();
             string dossierSelect = await dialog.ShowAsync(this);
-            //string arguments2 = $"cd {dossierSelect}";
-
             if(!string.IsNullOrEmpty(dossierSelect))
             {
                 this.tbxDossier.Text = dossierSelect;
                 this.tbxNomProjet.IsEnabled = true;
-                //process.StandardInput.WriteLine(arguments2);
-                //process.StandardInput.WriteLine("code .");
-                //process.WaitForExit();
-                //this.menu.FindControl("")
             }
 
         }
@@ -60,15 +40,17 @@ namespace CreateAllApp.Views
         {
             MenuItem mitSelection = (MenuItem)sender;
             var value = mitSelection.Header;
-            //mitSelection.Background =;
         }
 
         public void tbxNomProjet_TextChanged(object sender, TextChangedEventArgs e)
         {
             TextBox txtNomProjet = (TextBox)sender;
-            if(txtNomProjet.Text != string.Empty)
+            FrameworkClass framework = (FrameworkClass)this.menu.SelectedItem;
+            string pattern = @"^[a-zA-Z0-9]*$";
+            if (txtNomProjet.Text.Trim() != string.Empty && Regex.IsMatch(txtNomProjet.Text, pattern) && txtNomProjet.Text.Length >= 4)
             {
                 this.btnLance.IsEnabled = true;
+                commandeLineFrame = framework.Commande.Replace("{0}", txtNomProjet.Text);
             }
             else
             {
@@ -76,5 +58,42 @@ namespace CreateAllApp.Views
             }
         }
 
+        public void menu_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            ListBox listBox = (ListBox)sender;
+
+            FrameworkClass framework = (FrameworkClass)listBox.SelectedItem;
+            if (framework != null)
+            {
+                this.caseGestFram.IsEnabled = true;
+            }
+        }
+
+        public void btnLance_Click(object sender, RoutedEventArgs e)
+        {
+            OperatingSystem osOrdinateur = Environment.OSVersion;
+            string terminal = string.Empty;
+            if(osOrdinateur.Platform == PlatformID.Win32NT)
+            {
+                terminal = "cmd.exe";
+            }
+            else
+            {
+                terminal = "Terminal.app";
+            }
+            string arguments = "/K";
+            process.StartInfo.FileName = terminal;
+            process.StartInfo.Arguments = arguments;
+            process.StartInfo.RedirectStandardOutput = true;
+            process.StartInfo.RedirectStandardInput = true;
+            //process.StartInfo.UseShellExecute = false;
+            //process.StartInfo.CreateNoWindow = true;
+            //process.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
+            process.Start();
+            process.StandardInput.WriteLine(string.Format("cd {0}", this.tbxDossier.Text));
+            process.StandardInput.WriteLine(string.Format(this.commandeLineFrame.ToLower()));
+            //process.StandardInput.WriteLine("code .");
+            //Console.WriteLine("Le terminal est en arrière plan");
+        }
     }
 }
