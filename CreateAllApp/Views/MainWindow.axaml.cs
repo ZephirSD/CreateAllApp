@@ -1,9 +1,11 @@
 using Avalonia.Controls;
 using Avalonia.Interactivity;
+using Avalonia.Threading;
 using CreateAllApp.Models;
 using CreateAllApp.ViewModels;
 using System;
 using System.Diagnostics;
+using System.IO;
 using System.Text.RegularExpressions;
 
 namespace CreateAllApp.Views
@@ -90,8 +92,40 @@ namespace CreateAllApp.Views
             //process.StartInfo.CreateNoWindow = true;
             //process.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
             process.Start();
-            process.StandardInput.WriteLine(string.Format("cd {0}", this.tbxDossier.Text));
-            process.StandardInput.WriteLine(string.Format(this.commandeLineFrame.ToLower()));
+            StreamWriter sw = process.StandardInput;
+            if(sw.BaseStream.CanWrite)
+            {
+                sw.WriteLine(String.Format("cd {0}", this.tbxDossier.Text));
+                sw.WriteLine(String.Format(this.commandeLineFrame.ToLower()));
+            }
+
+            //process.OutputDataReceived += (s, e) =>
+            //{
+            //    if (!string.IsNullOrEmpty(e.Data))
+            //    {
+            //        Dispatcher.UIThread.Invoke(() => this.logConsole.Text += e.Data + "\n");
+            //    }
+            //};
+
+            //process.OutputDataReceived += (s, e) =>
+            //{
+            //    if (!string.IsNullOrEmpty(e.Data))
+            //    {
+            //        this.logConsole.Text += e.Data + Environment.NewLine;
+            //    }
+            //};
+
+            process.WaitForExit();
+            sw.Close();
+
+            //if(process.HasExited)
+            //{
+            //    process.Kill();
+            //}
+
+
+            //process.StandardInput.WriteLine(string.Format("cd {0}", this.tbxDossier.Text));
+            //process.StandardInput.WriteLine(string.Format(this.commandeLineFrame.ToLower()));
             //process.StandardInput.WriteLine("code .");
             //Console.WriteLine("Le terminal est en arrière plan");
         }
